@@ -1,58 +1,54 @@
 package edu.iu.c322.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
 class Payment {
-    private String cardNumber;
-    private String cardholderName;
-    private String expirationDate;
-    private int cvv;
 
-    public String getCardNumber() {
-        return cardNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    private String method;
+
+    private String number;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address billingAddress;
+
+    public int getId() {
+        return id;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getCardholderName() {
-        return cardholderName;
+    public String getMethod() {
+        return method;
     }
 
-    public void setCardholderName(String cardholderName) {
-        this.cardholderName = cardholderName;
+    public void setMethod(String method) {
+        this.method = method;
     }
 
-    public String getExpirationDate() {
-        return expirationDate;
+    public String getNumber() {
+        return number;
     }
 
-    public void setExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
-    public int getCvv() {
-        return cvv;
+    public Address getBillingAddress() {
+        return billingAddress;
     }
 
-    public void setCvv(int cvv) {
-        this.cvv = cvv;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Payment payment = (Payment) o;
-        return cvv == payment.cvv &&
-                Objects.equals(cardNumber, payment.cardNumber) &&
-                Objects.equals(cardholderName, payment.cardholderName) &&
-                Objects.equals(expirationDate, payment.expirationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cardNumber, cardholderName, expirationDate, cvv);
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
     }
 }

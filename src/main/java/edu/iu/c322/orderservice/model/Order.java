@@ -7,23 +7,33 @@ import java.util.Objects;
 
 @Entity
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
     private int customerId;
-    private double total;
+    private float total;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address shippingAddress;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items;
 
-    @ElementCollection
-    private List<Item> items;
-
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id")
     private Payment payment;
 
+    public void addOrderItem(OrderItem item){
+        items.add(item);
+        item.setOrder(this);
+    }
+
+    public void removeOrderItem(OrderItem item){
+        items.remove(item);
+        item.setOrder(null);
+    }
+
+    // getters and setters
     public int getId() {
         return id;
     }
@@ -40,11 +50,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public double getTotal() {
+    public float getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(float total) {
         this.total = total;
     }
 
@@ -56,11 +66,11 @@ public class Order {
         this.shippingAddress = shippingAddress;
     }
 
-    public List<Item> getItems() {
+    public List<OrderItem> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<OrderItem> items) {
         this.items = items;
     }
 
