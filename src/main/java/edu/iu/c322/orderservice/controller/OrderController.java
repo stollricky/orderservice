@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/{customerId}")
-    public List<Order> findByCustomer(@PathVariable int customerId){
+    public List<Order> findByOrder(@PathVariable int customerId){
         return repository.findByCustomerId(customerId);
     }
 
